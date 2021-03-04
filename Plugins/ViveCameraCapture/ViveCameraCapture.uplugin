@@ -1,0 +1,33 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.10",
+	"FriendlyName": "Vive Camera Capture",
+	"Description": "Vive Studios Camera Capture Plugin",
+	"Category": "ViveStudios",
+	"CreateBy": "Vive-Studios",
+	"CreateByURL": "https://vivestudios.com",
+	"DocsURL": "",
+	"MarketplaceURL": "https://vivestudios.com",
+	"SupportURL": "https://vivestudios.com",
+	"EnabledByDefault": false,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "ViveCameraCapture",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault",
+			"WhitelistPlatforms": [
+				"Win64"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ActorLayerUtilities",
+            "Enabled": true
+		}
+	]
+}
