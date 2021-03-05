@@ -84,6 +84,7 @@ void UViveSceneCaptureComponent2D::BeginPlay()
     Super::BeginPlay();
 
     SetupTextureTarget();
+    RefreshTargetedActorList();
 }
 
 void UViveSceneCaptureComponent2D::SetupTextureTarget()
@@ -97,14 +98,6 @@ void UViveSceneCaptureComponent2D::SetupTextureTarget()
         TextureTarget->InitAutoFormat( renderResolution.X, renderResolution.Y );
         TextureTarget->UpdateResourceImmediate( true );
     }
-}
-
-void UViveSceneCaptureComponent2D::UpdateSceneCaptureContents( FSceneInterface* InScene )
-{
-    RefreshTargetedActorList();
-    UpdateCaptureCameraSettings();
-
-    Super::UpdateSceneCaptureContents( InScene );
 }
 
 void UViveSceneCaptureComponent2D::RefreshTargetedActorList()
@@ -138,6 +131,13 @@ void UViveSceneCaptureComponent2D::RefreshTargetedActorList()
     }
 }
 
+void UViveSceneCaptureComponent2D::UpdateSceneCaptureContents( FSceneInterface* InScene )
+{
+    UpdateCaptureCameraSettings();
+
+    Super::UpdateSceneCaptureContents( InScene );
+}
+
 void UViveSceneCaptureComponent2D::UpdateCaptureCameraSettings()
 {
     if ( ensure( OwnerSceneCapture.IsValid() ) ) {
@@ -158,8 +158,6 @@ void UViveSceneCaptureComponent2D::UpdateCaptureCameraSettings()
 void UViveSceneCaptureComponent2D::CopyCameraSettingsToSceneCapture()
 {
     auto cameraComp = OwnerSceneCapture->GetCameraComponent();
-    SetWorldLocationAndRotation( cameraComp->GetComponentLocation(), cameraComp->GetComponentRotation() );
-    FOVAngle = cameraComp->FieldOfView;
 
     FMinimalViewInfo cameraViewInfo;
     cameraComp->GetCameraView( FApp::GetDeltaTime(), cameraViewInfo );
@@ -167,7 +165,12 @@ void UViveSceneCaptureComponent2D::CopyCameraSettingsToSceneCapture()
     const auto& srcPPSettings = cameraViewInfo.PostProcessSettings;
     auto& destPPSettings = PostProcessSettings;
 
+    auto destWeightedBlendables = destPPSettings.WeightedBlendables;
     destPPSettings = srcPPSettings;
+    destPPSettings.WeightedBlendables = destWeightedBlendables;
+
+    FOVAngle = cameraComp->FieldOfView;
+    SetWorldLocationAndRotation( cameraComp->GetComponentLocation(), cameraComp->GetComponentRotation() );
 }
 
 void UViveSceneCaptureComponent2D::SetOwnerSceneCapture( AViveCameraCapture* InActor )
