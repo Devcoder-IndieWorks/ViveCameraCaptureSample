@@ -4,7 +4,7 @@
 #include <Components/SceneCaptureComponent2D.h>
 #include "ViveSceneCaptureComponent2D.generated.h"
 
-UCLASS( hidecategories=(Projection, PostProcessVolume), ClassGroup=(ViveCameraSystem) )
+UCLASS( hidecategories=(Projection/*, PostProcessVolume*/), ClassGroup=(ViveCameraSystem) )
 class VIVECAMERACAPTURE_API UViveSceneCaptureComponent2D : public USceneCaptureComponent2D
 {
     GENERATED_UCLASS_BODY()
